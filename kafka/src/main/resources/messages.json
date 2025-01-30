@@ -1,0 +1,18 @@
+{
+  "messages" :
+      [
+        {
+          "iterate" : 3000,
+          "key" : {
+            "value": "${iterate.count}",
+            "type" : "int"
+          },
+          "value" : {
+            "value": "Value being added for the ${iterate.count} time.",
+            "type" : "string"
+          },
+          "topics" : "ONE,TWO",
+          "mix": "alternate-(duplicate, random, alternate)"
+        }
+      ]
+}

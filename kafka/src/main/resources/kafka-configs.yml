@@ -1,0 +1,27 @@
+kafkaConfigs:
+  - type: "default"
+    port: "9092"
+    image: "apache/kafka-native:3.8.0"
+    replication: 1
+    retention: 1296000000
+    partition: 1
+    ISR: 2
+    startupTimeout: 10
+    topics:
+      - name: "ONE"
+        partitions: 1
+        replication: 1
+      - name: "TWO"
+        partitions: 1
+        replication: 1
+    brokerConfigs:
+      brokers:
+        - name: "broker-1"
+#        - name: "broker-2"
+#        - name: "broker-3"
+    consumerConfigs:
+        spring.kafka.consumer.auto-offset-reset: "earliest"
+    producerConfigs:
+        linger.ms: "1"
+        key.serializer: "org.apache.kafka.common.serialization.IntegerSerializer"
+        value.serializer: "org.apache.kafka.common.serialization.StringSerializer"

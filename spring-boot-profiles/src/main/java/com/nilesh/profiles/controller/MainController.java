@@ -1,6 +1,6 @@
-package com.nilesh.practice.controller;
+package com.nilesh.profiles.controller;
 
-import com.nilesh.practice.service.MessageService;
+import com.nilesh.profiles.service.MessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/practice")
+@RequestMapping("/profile")
 public class MainController {
 
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);

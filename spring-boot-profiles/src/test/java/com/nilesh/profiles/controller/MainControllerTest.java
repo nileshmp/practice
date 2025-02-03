@@ -1,4 +1,4 @@
-package com.nilesh.practice.controller;
+package com.nilesh.profiles.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

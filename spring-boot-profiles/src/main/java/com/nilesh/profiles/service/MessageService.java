@@ -1,4 +1,4 @@
-package com.nilesh.practice.service;
+package com.nilesh.profiles.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

@@ -11,7 +11,6 @@ public class Trie {
 
     public Trie() {
         rootNode = new Node(true, "");
-
     }
 
     public long nodeCount() {
@@ -46,17 +45,17 @@ public class Trie {
         char[] charArray = search.toCharArray();
         for (int i = 0; i < charArray.length; i++) {
             String currValue = String.valueOf(charArray[i]);
-            // if this is the last character
-            if (i == charArray.length - 1) {
-                // TODO handle cases where i=this is not the value node
-                if (currNode.isValueNode()) {
-                    return currNode.getValues();
-                } else {
-                    // TODO continue till we find value nodes all the way till leaf node.
-                }
-            }
             if (currNode.hasChild(currValue)) {
                 currNode = currNode.getChild(currValue);
+                // if this is the last character
+                if (i == charArray.length - 1) {
+                    // TODO handle cases where i=this is not the value node
+                    if (currNode.isValueNode()) {
+                        return currNode.getValues();
+                    } else {
+                        // TODO continue till we find value nodes all the way till leaf node.
+                    }
+                }
             }
         }
         return Collections.emptyList();

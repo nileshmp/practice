@@ -7,6 +7,7 @@ import com.nilesh.practice.trie.Trie;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
 
 public class Main {
@@ -14,9 +15,10 @@ public class Main {
     public static void main(String[] args) throws IOException {
         int minLength = 3;
         String cities5000 =
-            "/Users/nilesh/work/codebase/practice/autosuggest/src/main/resources/cities5000.txt";
+            "/Users/nilesh/work/codebase/practice/autosuggest/src/main/data/cities5000.txt";
         Main main = new Main();
         Set<String> cities = main.cities(cities5000);
+        System.out.println("Total cities : "  + cities.size());
         Combinator combinator = new Combinator();
         Trie trie = new Trie();
         int count = 0;
@@ -29,15 +31,23 @@ public class Main {
             trie.build(city, combinations);
             System.out.println("Node count is : " + trie.nodeCount());
             System.out.println(count);
-            if (city.equalsIgnoreCase("Karungdong")) {
-                break;
-            }
+            // if (city.equalsIgnoreCase("Karungdong")) {
+            //     break;
+            // }
             length = Math.max(length, city.length());
         }
-        System.out.println("Highest length " + length);
-        List<String> searchResult = trie.find("gng");
-        System.out.println(searchResult.size());
-        searchResult.forEach(System.out::println);
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("Enter search string : ");
+            String searchString = scanner.next();
+            if (searchString.equalsIgnoreCase("exit")) {
+                break;
+            }
+            List<String> searchResult = trie.find(searchString);
+            System.out.println(searchResult.size() +  " results found.");
+            searchResult.forEach(System.out::println);
+            System.out.println("----------------------------------------");
+        }
     }
 
     public Set<String> cities(String fileName) throws IOException {
@@ -46,7 +56,7 @@ public class Main {
         Set<String> places = new HashSet<>();
         while (reader.hasNextLine()) {
             String currentLine = reader.nextLine();
-            String name = citiesParser.parse(currentLine);
+            String name = citiesParser.parseASCII(currentLine);
             places.add(name);
         }
         return places;

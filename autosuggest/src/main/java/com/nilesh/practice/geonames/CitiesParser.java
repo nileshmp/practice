@@ -6,9 +6,16 @@ import java.util.Set;
 
 public class CitiesParser {
 
-    public String parse(String value) {
+    public String parseUTF8(String value) {
+        // System.out.println("Complete row is : " + value);
         String[] tokens = value.split("\t");
         return tokens[1];
+    }
+
+    public String parseASCII(String value) {
+        // System.out.println("Complete row is : " + value);
+        String[] tokens = value.split("\t");
+        return tokens[2];
     }
 
     public Set<String> parseWithAliases(String value) {

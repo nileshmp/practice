@@ -8,16 +8,16 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         String allCountries =
-            "/Users/nilesh/work/codebase/practice/autosuggest/src/main/resources/allCountries.txt";
+            "/Users/nilesh/work/codebase/practice/autosuggest/src/main/data/allCountries.txt";
         String cities5000 =
-            "/Users/nilesh/work/codebase/practice/autosuggest/src/main/resources/cities5000.txt";
+            "/Users/nilesh/work/codebase/practice/autosuggest/src/main/data/cities5000.txt";
         FileReader reader = new FileReader(cities5000);
         CitiesParser citiesParser = new CitiesParser();
         Set<String> places = new HashSet<>();
         int count = 0;
         while (reader.hasNextLine()) {
             String currentLine = reader.nextLine();
-            String name = citiesParser.parse(currentLine);
+            String name = citiesParser.parseASCII(currentLine);
             System.out.println(name);
             places.add(name);
             System.out.println(places.size());

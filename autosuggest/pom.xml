@@ -23,7 +23,7 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <Main-Class>com.nilesh.practice.util.Main</Main-Class> <!-- Update with your main class -->
+                            <Main-Class>com.nilesh.practice.Main</Main-Class> <!-- Update with your main class -->
                         </manifestEntries>
                     </archive>
                 </configuration>

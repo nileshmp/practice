@@ -2,16 +2,18 @@ package com.nilesh.practice.trie;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Node {
 
     private final boolean isRoot;
     private Node parent;
-    private HashMap<String, Node> children;
-    private String name;
-    private ArrayList<String> values;
+    private HashMap<Byte, Node> children;
+    private byte name;
+    private Set<byte[]> values;
 
-    public Node(boolean isRoot, String name) {
+    public Node(boolean isRoot, byte name) {
         this.isRoot = isRoot;
         this.name = name;
     }
@@ -24,11 +26,11 @@ public class Node {
         this.parent = parent;
     }
 
-    public HashMap<String, Node> getChildren() {
+    public HashMap<Byte, Node> getChildren() {
         return children;
     }
 
-    public void setChildren(HashMap<String, Node> children) {
+    public void setChildren(HashMap<Byte, Node> children) {
         this.children = children;
     }
 
@@ -43,28 +45,28 @@ public class Node {
         return (this.values != null && !this.values.isEmpty());
     }
 
-    public ArrayList<String> getValues() {
+    public Set<byte[]> getValues() {
         return values;
     }
 
-    public void setValues(ArrayList<String> values) {
+    public void setValues(Set<byte[]> values) {
         this.values = values;
     }
 
-    public void addValue(String value) {
+    public void addValue(byte[] value) {
         if (this.values == null) {
-            this.values = new ArrayList<>();
+            this.values = new HashSet<>();
         }
-        if (value != null && !value.isEmpty() && !value.isBlank()) {
+        if (value != null && value.length > 0) {
             values.add(value);
         }
     }
 
-    public String getName() {
+    public byte getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(byte name) {
         this.name = name;
     }
 
@@ -72,11 +74,11 @@ public class Node {
         return isRoot;
     }
 
-    public boolean hasChild(String name) {
+    public boolean hasChild(byte name) {
         return (this.children != null && this.children.containsKey(name));
     }
 
-    public Node getChild(String currValue) {
+    public Node getChild(byte currValue) {
         if(this.children != null) {
             return this.children.get(currValue);
         }

@@ -1,5 +1,7 @@
 package com.nilesh.practice.trie;
 
+import static com.nilesh.practice.utils.CharacterUtils.toLowerCase;
+
 import com.nilesh.practice.jvm.Memory;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -13,7 +15,7 @@ public class Trie {
     private long nodeCount = 0;
 
     public Trie() {
-        rootNode = new Node(true, (byte) -1);
+        rootNode = new Node(true, (byte)-1);
         memory = new Memory();
     }
 
@@ -23,26 +25,36 @@ public class Trie {
 
     public void build(byte[] value, Set<byte[]> combinations) {
         System.out.println("Entered building for combinations...");
-        for (byte[] combination : combinations) {
-            Node currentNode = rootNode;
-            for (byte charCombo : combination) {
-                if (!currentNode.hasChild(charCombo)) {
-                    Node newNode = new Node(false, charCombo);
-                    nodeCount++;
-                    currentNode.addChild(newNode);
-                    currentNode = newNode;
-                } else {
-                    currentNode = currentNode.getChild(charCombo);
+        if (combinations.isEmpty()) {
+            buildTrie(value, value);
+        } else {
+            for (byte[] combination : combinations) {
+                buildTrie(value, combination);
+                long usedMemory = memory.printSystemMemoryUsage();
+                if (usedMemory > 1000) {
+                    System.out.println("Memory barrier breached...");
+                    break;
                 }
-            }
-            currentNode.addValue(value);
-            long usedMemory = memory.printSystemMemoryUsage();
-            if (usedMemory > 1000) {
-                System.out.println("Memory barrier breached...");
-                break;
             }
         }
         System.out.println("Memory consumed is : " + memory.printSystemMemoryUsage());
+    }
+
+    private void buildTrie(byte[] value, byte[] combination) {
+        Node currentNode = rootNode;
+        for (byte charCombo : combination) {
+            // Lower case the character before adding to the Trie
+            charCombo = toLowerCase(charCombo);
+            if (!currentNode.hasChild(charCombo)) {
+                Node newNode = new Node(false, (byte)charCombo);
+                nodeCount++;
+                currentNode.addChild(newNode);
+                currentNode = newNode;
+            } else {
+                currentNode = currentNode.getChild(charCombo);
+            }
+        }
+        currentNode.addValue(value);
     }
 
     public List<String> find(String search) {

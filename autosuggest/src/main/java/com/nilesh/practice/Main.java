@@ -7,6 +7,7 @@ import com.nilesh.practice.jvm.Memory;
 import com.nilesh.practice.trie.Trie;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
@@ -18,8 +19,8 @@ public class Main {
         Combinator combinator = new Combinator();
         Memory memory = new Memory();
         Trie trie = new Trie();
-        readFromFileAndBuild(combinator, memory, trie);
-        // build(combinator, trie);
+        readFromFileAndBuild(combinator, memory, trie, true);
+        // build(combinator, trie, false);
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("Enter search string : ");
@@ -34,14 +35,14 @@ public class Main {
         }
     }
 
-    private static void build(Combinator combinator, Trie trie) throws IOException {
+    private static void build(Combinator combinator, Trie trie, boolean useCombinations) throws IOException {
         int minLength = 3;
         Main main = new Main();
-        main.combineAndBuildTrie(combinator, trie, "Bangalore".getBytes(StandardCharsets.US_ASCII),
-            minLength);
+        main.buildTrie(combinator, trie, "Goa".getBytes(StandardCharsets.US_ASCII),
+            minLength, useCombinations);
     }
 
-    private static void readFromFileAndBuild(Combinator combinator, Memory memory, Trie trie) throws IOException {
+    private static void readFromFileAndBuild(Combinator combinator, Memory memory, Trie trie, boolean useCombinations) throws IOException {
         int minLength = 3;
         String cities5000 =
             "/Users/nilesh/work/codebase/practice/autosuggest/src/main/data/cities5000.txt";
@@ -54,7 +55,7 @@ public class Main {
                 System.out.println("Memory barrier breached...");
                 break;
             }
-            main.combineAndBuildTrie(combinator, trie, city, minLength);
+            main.buildTrie(combinator, trie, city, minLength, useCombinations);
             count++;
         }
         System.out.println("Total cities : " + cities.size());
@@ -63,12 +64,17 @@ public class Main {
 
     private int count = 0;
 
-    private void combineAndBuildTrie(Combinator combinator, Trie trie, byte[] city, int minLength) {
-        Set<byte[]> combinations = combinator.combinations(city, minLength);
-        System.out.println(
-            "Combination count for word " + new String(city) + " is " + combinations.size());
-        count += combinations.size();
-        trie.build(city, combinations);
+    private void buildTrie(Combinator combinator, Trie trie, byte[] city, int minLength, boolean useCombinations) {
+        if(useCombinations) {
+            Set<byte[]> combinations = combinator.combinations(city, minLength);
+            System.out.println(
+                "Combination count for word " + new String(city) + " is " + combinations.size());
+            count += combinations.size();
+            trie.build(city, combinations);
+        } else {
+            trie.build(city, Collections.emptySet());
+        }
+
         System.out.println("Node count is : " + trie.nodeCount());
         System.out.println(count);
     }

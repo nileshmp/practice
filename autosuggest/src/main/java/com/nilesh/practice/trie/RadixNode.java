@@ -4,31 +4,33 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Node {
+public class RadixNode {
 
     private final boolean isRoot;
-    private HashMap<Byte, Node> children;
-    private Byte name;
+    private HashMap<Byte, RadixNode> children;
+    private byte[] name;
+    private byte nodeId;
     private Set<byte[]> values;
 
-    public Node(boolean isRoot, Byte name) {
+    public RadixNode(boolean isRoot, byte nodeId, byte[] name) {
         this.isRoot = isRoot;
+        this.nodeId = nodeId;
         this.name = name;
     }
 
-     public HashMap<Byte, Node> getChildren() {
+     public HashMap<Byte, RadixNode> getChildren() {
         return children;
     }
 
-    public void setChildren(HashMap<Byte, Node> children) {
+    public void setChildren(HashMap<Byte, RadixNode> children) {
         this.children = children;
     }
 
-    public void addChild(Node childNode) {
+    public void addChild(RadixNode childNode) {
         if (children == null) {
             children = new HashMap<>();
         }
-        this.children.put(childNode.getName(), childNode);
+        this.children.put(childNode.getNodeId(), childNode);
     }
 
     public boolean isValueNode() {
@@ -52,11 +54,11 @@ public class Node {
         }
     }
 
-    public Byte getName() {
+    public byte[] getName() {
         return name;
     }
 
-    public void setName(Byte name) {
+    public void setName(byte[] name) {
         this.name = name;
     }
 
@@ -68,10 +70,18 @@ public class Node {
         return (this.children != null && this.children.containsKey(name));
     }
 
-    public Node getChild(Byte name) {
+    public RadixNode getChild(Byte currValue) {
         if (this.children != null) {
-            return this.children.get(name);
+            return this.children.get(currValue);
         }
         return null;
+    }
+
+    public byte getNodeId() {
+        return nodeId;
+    }
+
+    public void setNodeId(byte nodeId) {
+        this.nodeId = nodeId;
     }
 }

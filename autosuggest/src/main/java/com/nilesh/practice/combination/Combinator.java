@@ -11,7 +11,6 @@ public class Combinator {
         Set<byte[]> combinations = new HashSet<>();
         for (int i = word.length-1; i >= 0 ; i--) {
             byte character = word[i];
-            character = convertToLowerCase(character);
             combinations = combine(combinations, character);
         }
         // for (int i = word.length()-1; i >= 0 ; i--) {
@@ -20,12 +19,6 @@ public class Combinator {
         // 2. remove all the values less than the minLength
         combinations = cleanse(combinations, minLength); // O(n)
         return combinations;
-    }
-
-    private byte convertToLowerCase(byte character) {
-        char toChar = (char) character;
-        // Convert character to lowercase
-        return (byte) Character.toLowerCase(toChar);
     }
 
     private Set<byte[]> cleanse(Set<byte[]> combinations, int minLength) {

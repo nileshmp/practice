@@ -5,13 +5,14 @@ import com.nilesh.practice.autosuggest.geonames.CitiesParser;
 import com.nilesh.practice.autosuggest.geonames.FileReader;
 import com.nilesh.practice.autosuggest.jvm.Memory;
 import com.nilesh.practice.autosuggest.trie.RadixTrie;
-// import com.nilesh.practice.autosuggest.trie.Trie;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class Main {
 
@@ -78,13 +79,21 @@ public class Main {
             trie.build(city, Collections.emptySet());
         }
         System.out.println("Node count is : " + trie.nodeCount());
-        System.out.println(count);
+        System.out.println("Combination count is " + count);
     }
 
     public Set<byte[]> cities(String fileName) throws IOException {
         FileReader reader = new FileReader(fileName);
         CitiesParser citiesParser = new CitiesParser();
-        Set<byte[]> places = new HashSet<>();
+        Set<byte[]> places = new TreeSet<>(new Comparator<byte[]>() {
+            @Override
+            public int compare(byte[] byteArray1, byte[] byteArray2) {
+                // Convert byte[] to String and compare lexicographically
+                String str1 = new String(byteArray1, StandardCharsets.US_ASCII);
+                String str2 = new String(byteArray2, StandardCharsets.US_ASCII);
+                return str1.compareTo(str2);
+            }
+        });
         while (reader.hasNextLine()) {
             String currentLine = reader.nextLine();
             String name = citiesParser.parseASCII(currentLine);

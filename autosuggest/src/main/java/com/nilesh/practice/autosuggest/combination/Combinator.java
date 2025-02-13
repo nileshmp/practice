@@ -7,6 +7,7 @@ import java.util.Set;
 public class Combinator {
 
     public Set<byte[]> combinations(byte[] word, int minLength) {
+        System.out.println("Combining word " + new String(word));
         // word = word.toLowerCase();
         Set<byte[]> combinations = new HashSet<>();
         for (int i = word.length-1; i >= 0 ; i--) {

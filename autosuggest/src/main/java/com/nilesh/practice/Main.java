@@ -7,10 +7,11 @@ import com.nilesh.practice.jvm.Memory;
 import com.nilesh.practice.trie.Trie;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.HashSet;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class Main {
 
@@ -41,7 +42,8 @@ public class Main {
             minLength);
     }
 
-    private static void readFromFileAndBuild(Combinator combinator, Memory memory, Trie trie) throws IOException {
+    private static void readFromFileAndBuild(Combinator combinator, Memory memory, Trie trie)
+        throws IOException {
         int minLength = 3;
         String cities5000 =
             "/Users/nilesh/work/codebase/practice/autosuggest/src/main/data/cities5000.txt";
@@ -76,7 +78,15 @@ public class Main {
     public Set<byte[]> cities(String fileName) throws IOException {
         FileReader reader = new FileReader(fileName);
         CitiesParser citiesParser = new CitiesParser();
-        Set<byte[]> places = new HashSet<>();
+        Set<byte[]> places = new TreeSet<>(new Comparator<byte[]>() {
+            @Override
+            public int compare(byte[] byteArray1, byte[] byteArray2) {
+                // Convert byte[] to String and compare lexicographically
+                String str1 = new String(byteArray1, StandardCharsets.US_ASCII);
+                String str2 = new String(byteArray2, StandardCharsets.US_ASCII);
+                return str1.compareTo(str2);
+            }
+        });
         while (reader.hasNextLine()) {
             String currentLine = reader.nextLine();
             String name = citiesParser.parseASCII(currentLine);

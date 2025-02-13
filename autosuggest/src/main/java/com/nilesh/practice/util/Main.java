@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class Main {
 
@@ -53,7 +54,7 @@ public class Main {
     public Set<String> cities(String fileName) throws IOException {
         FileReader reader = new FileReader(fileName);
         CitiesParser citiesParser = new CitiesParser();
-        Set<String> places = new HashSet<>();
+        Set<String> places = new TreeSet<>();
         while (reader.hasNextLine()) {
             String currentLine = reader.nextLine();
             String name = citiesParser.parseASCII(currentLine);

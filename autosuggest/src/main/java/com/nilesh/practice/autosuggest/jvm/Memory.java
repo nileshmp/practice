@@ -1,4 +1,4 @@
-package com.nilesh.practice.jvm;
+package com.nilesh.practice.autosuggest.jvm;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;

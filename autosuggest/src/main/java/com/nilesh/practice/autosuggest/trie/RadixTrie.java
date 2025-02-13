@@ -1,8 +1,8 @@
-package com.nilesh.practice.trie;
+package com.nilesh.practice.autosuggest.trie;
 
-import static com.nilesh.practice.utils.CharacterUtils.toLowerCase;
-
-import com.nilesh.practice.jvm.Memory;
+import com.nilesh.practice.autosuggest.ITrie;
+import com.nilesh.practice.autosuggest.jvm.Memory;
+import com.nilesh.practice.autosuggest.utils.CharacterUtils;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class RadixTrie {
+public class RadixTrie implements ITrie {
 
     private final RadixNode rootNode;
     private final Memory memory;
@@ -44,11 +44,12 @@ public class RadixTrie {
     }
 
     private void buildTrie(byte[] value, byte[] combination) {
+        combination = CharacterUtils.toLowerCase(combination);
+        // System.out.printf("Building Trie for value %s and combination %s \n", new String(value),
+        //     new String(combination));
         RadixNode currentNode = rootNode;
         for (int index = 0; index < combination.length; index++) {
             byte charCombo = combination[index];
-            // Lower case the character before adding to the Trie
-            charCombo = toLowerCase(charCombo);
             if (!currentNode.hasChild(charCombo)) {
                 RadixNode newNode = new RadixNode(false, charCombo,
                     Arrays.copyOfRange(combination, index, combination.length));
@@ -71,6 +72,15 @@ public class RadixTrie {
                     name[nameIndex] == combination[index]) {
                     nameIndex++;
                     index++;
+                }
+                // we have matched the current name completely with the given combination
+                if (name.length > 0 && nameIndex == name.length) {
+                    if (combination.length > nameIndex) {
+                        // go to the child node.
+                        currentNode = childNode;
+                        index--;
+                        continue;
+                    }
                 }
                 // since we have a node which needs a split
                 byte[] currentNodeName = Arrays.copyOfRange(name, 0, nameIndex);

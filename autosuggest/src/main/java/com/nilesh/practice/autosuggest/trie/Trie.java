@@ -1,14 +1,15 @@
-package com.nilesh.practice.trie;
+package com.nilesh.practice.autosuggest.trie;
 
-import static com.nilesh.practice.utils.CharacterUtils.toLowerCase;
-
-import com.nilesh.practice.jvm.Memory;
+import com.nilesh.practice.autosuggest.ITrie;
+import com.nilesh.practice.autosuggest.jvm.Memory;
+import com.nilesh.practice.autosuggest.utils.CharacterUtils;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-public class Trie {
+public class Trie implements ITrie {
 
     private final Node rootNode;
     private final Memory memory;
@@ -44,7 +45,7 @@ public class Trie {
         Node currentNode = rootNode;
         for (byte charCombo : combination) {
             // Lower case the character before adding to the Trie
-            charCombo = toLowerCase(charCombo);
+            charCombo = CharacterUtils.toLowerCase(charCombo);
             if (!currentNode.hasChild(charCombo)) {
                 Node newNode = new Node(false, (byte)charCombo);
                 nodeCount++;
@@ -57,7 +58,7 @@ public class Trie {
         currentNode.addValue(value);
     }
 
-    public List<String> find(String search) {
+    public Set<String> find(String search) {
         search = search.toLowerCase();
         byte[] searchBytes = search.getBytes(StandardCharsets.US_ASCII);
         Node currNode = rootNode;
@@ -69,7 +70,7 @@ public class Trie {
                 if (count == searchBytes.length - 1) {
                     // TODO handle cases where i=this is not the value node
                     if (currNode.isValueNode()) {
-                        return currNode.getValues().stream().map(String::new).toList();
+                        return currNode.getValues().stream().map(String::new).collect(Collectors.toSet());
                     } else {
                         // TODO continue till we find value nodes all the way till leaf node.
                     }
@@ -77,7 +78,7 @@ public class Trie {
             }
             count++;
         }
-        return Collections.emptyList();
+        return Collections.emptySet();
     }
 }
 

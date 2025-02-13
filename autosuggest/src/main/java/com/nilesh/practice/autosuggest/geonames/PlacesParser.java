@@ -1,4 +1,4 @@
-package com.nilesh.practice.geonames;
+package com.nilesh.practice.autosuggest.geonames;
 
 public class PlacesParser {
 

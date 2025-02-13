@@ -1,4 +1,4 @@
-package com.nilesh.practice.trie;
+package com.nilesh.practice.autosuggest.trie;
 
 import java.util.HashMap;
 import java.util.HashSet;

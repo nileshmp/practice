@@ -1,4 +1,4 @@
-package com.nilesh.practice.combination;
+package com.nilesh.practice.autosuggest.combination;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;

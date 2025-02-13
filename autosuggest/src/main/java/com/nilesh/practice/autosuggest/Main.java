@@ -1,15 +1,15 @@
-package com.nilesh.practice;
+package com.nilesh.practice.autosuggest;
 
-import com.nilesh.practice.combination.Combinator;
-import com.nilesh.practice.geonames.CitiesParser;
-import com.nilesh.practice.geonames.FileReader;
-import com.nilesh.practice.jvm.Memory;
-import com.nilesh.practice.trie.Trie;
+import com.nilesh.practice.autosuggest.combination.Combinator;
+import com.nilesh.practice.autosuggest.geonames.CitiesParser;
+import com.nilesh.practice.autosuggest.geonames.FileReader;
+import com.nilesh.practice.autosuggest.jvm.Memory;
+import com.nilesh.practice.autosuggest.trie.RadixTrie;
+// import com.nilesh.practice.autosuggest.trie.Trie;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -18,7 +18,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Combinator combinator = new Combinator();
         Memory memory = new Memory();
-        Trie trie = new Trie();
+        ITrie trie = new RadixTrie();
         readFromFileAndBuild(combinator, memory, trie, true);
         // build(combinator, trie, false);
         Scanner scanner = new Scanner(System.in);
@@ -28,21 +28,23 @@ public class Main {
             if (searchString.equalsIgnoreCase("exit")) {
                 break;
             }
-            List<String> searchResult = trie.find(searchString);
+            Set<String> searchResult = trie.find(searchString);
             System.out.println(searchResult.size() + " results found.");
             searchResult.forEach(System.out::println);
             System.out.println("----------------------------------------");
         }
     }
 
-    private static void build(Combinator combinator, Trie trie, boolean useCombinations) throws IOException {
+    private static void build(Combinator combinator, ITrie trie, boolean useCombinations)
+        throws IOException {
         int minLength = 3;
         Main main = new Main();
         main.buildTrie(combinator, trie, "Goa".getBytes(StandardCharsets.US_ASCII),
             minLength, useCombinations);
     }
 
-    private static void readFromFileAndBuild(Combinator combinator, Memory memory, Trie trie, boolean useCombinations) throws IOException {
+    private static void readFromFileAndBuild(Combinator combinator, Memory memory, ITrie trie,
+                                             boolean useCombinations) throws IOException {
         int minLength = 3;
         String cities5000 =
             "/Users/nilesh/work/codebase/practice/autosuggest/src/main/data/cities5000.txt";
@@ -64,8 +66,9 @@ public class Main {
 
     private int count = 0;
 
-    private void buildTrie(Combinator combinator, Trie trie, byte[] city, int minLength, boolean useCombinations) {
-        if(useCombinations) {
+    private void buildTrie(Combinator combinator, ITrie trie, byte[] city, int minLength,
+                           boolean useCombinations) {
+        if (useCombinations) {
             Set<byte[]> combinations = combinator.combinations(city, minLength);
             System.out.println(
                 "Combination count for word " + new String(city) + " is " + combinations.size());
@@ -74,7 +77,6 @@ public class Main {
         } else {
             trie.build(city, Collections.emptySet());
         }
-
         System.out.println("Node count is : " + trie.nodeCount());
         System.out.println(count);
     }

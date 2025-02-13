@@ -30,7 +30,7 @@ public class Main {
             count += combinations.size();
             trie.build(city, combinations);
             System.out.println("Node count is : " + trie.nodeCount());
-            System.out.println(count);
+            System.out.println("Combinations count is " + count);
             // if (city.equalsIgnoreCase("Karungdong")) {
             //     break;
             // }

@@ -65,4 +65,20 @@ class RadixTrieTest {
         assertEquals(2, results.size(), "Search results should be 2.");
         assertTrue(results.contains("mum"), "Second result should be mummy.");
     }
+
+    @Test
+    public void shouldAddCitiesWhichSplitsTheCurrentNodeWithSingleCharacters() {
+        RadixTrie radixTrie = new RadixTrie();
+        radixTrie.build("mumbai".getBytes(StandardCharsets.US_ASCII), Collections.emptySet());
+        radixTrie.build("mu".getBytes(StandardCharsets.US_ASCII), Collections.emptySet());
+        radixTrie.build("mum".getBytes(StandardCharsets.US_ASCII), Collections.emptySet());
+        radixTrie.build("mumb".getBytes(StandardCharsets.US_ASCII), Collections.emptySet());
+        Set<String> results = radixTrie.find("m");
+        assertFalse(results.isEmpty(), "Search results should not be empty");
+        assertEquals(4, results.size(), "Search results should be 4.");
+        assertTrue(results.contains("mumbai"), "First result should be mumbai");
+        assertTrue(results.contains("mu"), "Second result should be mu.");
+        assertTrue(results.contains("mum"), "Second result should be mum.");
+        assertTrue(results.contains("mumb"), "Second result should be mumb.");
+    }
 }
